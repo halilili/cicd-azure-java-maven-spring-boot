@@ -27,11 +27,23 @@ stages:
       vmImage: $(vmImageName)
     
     steps:
-    - task: Maven@3
+    #- task: Maven@3
+      #displayName: 'Maven Package'
+      #inputs:
+        #mavenPomFile: 'app/pom.xml'
+    - task: Maven@4
       displayName: 'Maven Package'
       inputs:
         mavenPomFile: 'app/pom.xml'
-
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        codeCoverageToolOption: 'Cobertura'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
     - task: CopyFiles@2
       displayName: 'Copy Files to artifact staging directory'
       inputs:
