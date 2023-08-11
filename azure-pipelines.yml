@@ -9,10 +9,10 @@ trigger:
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '4c8e7db9-7472-409e-8b5a-49c63cab73e1'
+  #azureSubscription: '4c8e7db9-7472-409e-8b5a-49c63cab73e1'
   
   # Web app name
-  webAppName: 'java-spring-boot'
+  #: 'java-spring-boot'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -56,29 +56,29 @@ stages:
       inputs:
         targetPath: $(Build.ArtifactStagingDirectory)
 
-- stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - deployment: DeployLinuxWebApp
-    displayName: Deploy Linux Web App
-    environment: 'development'
-    pool: 
-      vmImage: $(vmImageName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: DownloadPipelineArtifact@1
-            displayName: 'Download Pipeline Artifact'
-            inputs:
-              buildType: 'current'
+#- stage: Deploy
+  #displayName: Deploy stage
+  #dependsOn: Build
+  #condition: succeeded()
+  #jobs:
+  #- deployment: DeployLinuxWebApp
+    #displayName: Deploy Linux Web App
+    #environment: 'development'
+    #pool: 
+      #vmImage: $(vmImageName)
+    #strategy:
+      #runOnce:
+        #deploy:
+          #steps:
+          #- task: DownloadPipelineArtifact@1
+            #displayName: 'Download Pipeline Artifact'
+            #inputs:
+              #buildType: 'current'
 
-          - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: gs-spring-boot'
-            inputs:
-              azureSubscription: $(azureSubscription)
-              appType: webAppLinux
-              appName: $(webAppName)
-              package: '$(System.ArtifactsDirectory)/drop/**/target/*.?(war|jar)'
+          #- task: AzureWebApp@1
+            #displayName: 'Azure Web App Deploy: gs-spring-boot'
+            #inputs:
+              #azureSubscription: $(azureSubscription)
+              #appType: webAppLinux
+              #appName: $(webAppName)
+              #package: '$(System.ArtifactsDirectory)/drop/**/target/*.?(war|jar)'
